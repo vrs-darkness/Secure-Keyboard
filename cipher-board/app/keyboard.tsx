@@ -80,11 +80,11 @@ export default function Index() {
   const Cappressed = (state: Int32) => {
     if (state===1){
       setCaps(0);
-      setKeys(Upper_Letters);
+      setKeys(lower_Letters);
     }
     else{
       setCaps(1);
-      setKeys(lower_Letters);
+      setKeys(Upper_Letters);
     }
   }
   const Handle_keys = (key: string) =>{
@@ -98,7 +98,7 @@ export default function Index() {
     }
     else if(key==='CAP'){
       const icon = require('./static/caps.png');
-      if (Caps==1){
+      if (Caps==0){
         return(
           <TouchableOpacity style={Styles.caps}onPress={() => Cappressed(Caps)}>
             <Image source={icon} style={Styles.img}></Image>
