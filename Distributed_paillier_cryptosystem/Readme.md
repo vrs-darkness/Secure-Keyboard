@@ -27,7 +27,7 @@ The distributed Paillier cryptosystem can be divided into four main components:
 - **Parameters**:
   - Let $\Theta$ be the security parameter.
   - Let $p$ and $q$ be large primes.
-  - Compute $ N $pq$ and $ \lambda = \text{lcm}(p-1, q-1)$.
+  - Compute $N = pq$ and $ \lambda = \text{lcm}(p-1, q-1)$.
   
 - **Keys**:
   - Public Key: $pk = N$

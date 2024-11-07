@@ -3,3 +3,56 @@
 file.txt
 keyboard.bin
 word.keras
+# Node modules
+node_modules
+
+# React Native build directories
+/android/.gradle/
+/android/app/build/
+/ios/Pods/
+/ios/build/
+
+# React Native packager
+/.expo/
+/.expo/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# macOS Finder
+.DS_Store
+
+# Expo files (if using Expo)
+.expo/
+
+# Coverage folder (if using testing tools like Jest)
+coverage/
+
+# Environment variable files (if any)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# JetBrains IDEs
+*.iml
+
+# Windows
+Thumbs.db
+
+# Android Studio
+.gradle/
+
+# CocoaPods (if applicable)
+/ios/Pods/
+/ios/Podfile.lock
+
+# Build output
+/dist/
