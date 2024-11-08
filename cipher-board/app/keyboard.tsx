@@ -1,8 +1,8 @@
 import { Text, View, Dimensions, TextInput, TouchableOpacity, Image, StyleSheet, Vibration } from "react-native";
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Int32 } from "react-native/Libraries/Types/CodegenTypes";
 import Model from "./model";
-import { LayersModel } from '@tensorflow/tfjs'
+import { LayersModel } from '@tensorflow/tfjs';
 
 const { width, height } = Dimensions.get('window');  // Get the screen width and height
 
@@ -96,6 +96,14 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 5,
     backgroundColor: '#f2f2f2',
+  },
+  recommendationContainer: {
+    padding: 10,
+    marginBottom: 20,
+  },
+  recommendationText: {
+    fontSize: 16,
+    color: '#333',
   }
 });
 
@@ -110,38 +118,25 @@ export default function Index() {
     ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
     ['CAP', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'IMG1']
   ];
-  
+
   const [Input, setInput] = useState('');
   const [Caps, setCaps] = useState(0);
   const [Keys, setKeys] = useState(lower_Letters);
-  const [model, setModel] = useState<LayersModel | undefined>(undefined);;
+  const [recommend, setRecommend] = useState<string[]>([]);
 
-  useEffect((() => {
-    const fetchModel = async () =>{
-    try{
-      const value = await Model();
-      setModel(value);
-      console.log('Done..');
-    }
-    catch (error){
-      console.log(model);
-      console.log('model loading error: ', error);
-    }};
-    fetchModel();
-  }), []) ;
-
-  const handlekeyPressed = (key: string) => {
-    setInput(Input + key);
+  const handleKeyPressed = (key: string) => {
+    setInput((prevInput) => prevInput + key);
+    Recommend();
   };
 
-  const deletekeyPressed = () => {
+  const deleteKeyPressed = () => {
     if (Input.length) {
       setInput(Input.slice(0, -1));
       Vibration.vibrate(100);  // Vibrates for 100 milliseconds on key press
     }
   };
 
-  const Cappressed = (state: Int32) => {
+  const CapPressed = (state: Int32) => {
     if (state === 1) {
       setCaps(0);
       setKeys(lower_Letters);
@@ -150,38 +145,49 @@ export default function Index() {
       setKeys(Upper_Letters);
     }
   };
-  const Recommend = () => {
-      if (Input.length){
 
-      }
-  }
+  const Recommend = async () => {
+    if (Input.length) {
+      await Model(Input, setRecommend);
+    }
+  };
 
-  const Handle_keys = (key: string) => {
+  const renderRecommendations = () => {
+    // Conditionally render recommendations only if there are any
+    console.log(recommend);
+    if (recommend.length > 0) {
+      return (
+        <View style={Styles.recommendationContainer}>
+          {recommend.map((val, index) => (
+            <Text key={index} style={Styles.recommendationText}>{val}</Text>
+          ))}
+        </View>
+      );
+    }
+    return <Text>hi</Text>; // Don't render anything if there are no recommendations
+  };
+
+  const handleKeys = (key: string) => {
     if (key === 'IMG1') {
       const icon = require('./static/bs.png');
       return (
-        <TouchableOpacity style={Styles.key} onPress={() => deletekeyPressed()}>
+        <TouchableOpacity style={Styles.key} onPress={deleteKeyPressed}>
           <Image source={icon} style={Styles.img} />
         </TouchableOpacity>
       );
     } else if (key === 'CAP') {
       const icon = require('./static/caps.png');
-      if (Caps == 0) {
-        return (
-          <TouchableOpacity style={Styles.caps} onPress={() => Cappressed(Caps)}>
-            <Image source={icon} style={Styles.img} />
-          </TouchableOpacity>
-        );
-      } else {
-        return (
-          <TouchableOpacity style={Styles.capsclicked} onPress={() => Cappressed(Caps)}>
-            <Image source={icon} style={Styles.img} />
-          </TouchableOpacity>
-        );
-      }
+      return (
+        <TouchableOpacity
+          style={Caps === 0 ? Styles.caps : Styles.capsclicked}
+          onPress={() => CapPressed(Caps)}
+        >
+          <Image source={icon} style={Styles.img} />
+        </TouchableOpacity>
+      );
     } else {
       return (
-        <TouchableOpacity style={Styles.key} onPress={() => handlekeyPressed(key)}>
+        <TouchableOpacity style={Styles.key} onPress={() => handleKeyPressed(key)}>
           <Text style={Styles.keyText}>{key}</Text>
         </TouchableOpacity>
       );
@@ -190,30 +196,30 @@ export default function Index() {
 
   return (
     <View style={Styles.container}>
-      <TextInput 
-        style={Styles.input} 
-        value={Input} 
+      <TextInput
+        style={Styles.input}
+        value={Input}
         editable={false}
-        placeholder="Type something..." 
+        placeholder="Type something..."
       />
+      {renderRecommendations()} 
+      {/*  Conditionally display recommendations */}
       <View style={Styles.keyboard}>
-        {/* {Recommend()} */}
         {Keys.map((row, rowIndex) => (
-
           <View style={Styles.row} key={rowIndex}>
             {row.map((letter, index) => (
-              <React.Fragment key={index}>{Handle_keys(letter)}</React.Fragment>
+              <React.Fragment key={index}>{handleKeys(letter)}</React.Fragment>
             ))}
           </View>
         ))}
         <View style={Styles.row}>
-          <TouchableOpacity style={Styles.key} onPress={() => handlekeyPressed(',')}>
+          <TouchableOpacity style={Styles.key} onPress={() => handleKeyPressed(',')}>
             <Text style={Styles.keyText}>,</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.space} onPress={() => handlekeyPressed(' ')}>
+          <TouchableOpacity style={Styles.space} onPress={() => handleKeyPressed(' ')}>
             <Text style={Styles.keyText}>Space</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.key} onPress={() => handlekeyPressed('.')}>
+          <TouchableOpacity style={Styles.key} onPress={() => handleKeyPressed('.')}>
             <Text style={Styles.keyText}>.</Text>
           </TouchableOpacity>
         </View>

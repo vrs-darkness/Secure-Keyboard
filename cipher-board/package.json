@@ -24,6 +24,7 @@
     "expo-constants": "~16.0.2",
     "expo-file-system": "~17.0.1",
     "expo-font": "~12.0.9",
+    "expo-gl": "~14.0.2",
     "expo-linking": "~6.3.1",
     "expo-router": "^3.1.0",
     "expo-splash-screen": "~0.27.5",
@@ -41,8 +42,7 @@
     "react-native-tensorflow-lite": "^1.0.6",
     "react-native-tflite": "^0.0.2",
     "react-native-web": "~0.19.10",
-    "tflite-react-native": "^0.0.5",
-    "expo-gl": "~14.0.2"
+    "tflite-react-native": "^0.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
