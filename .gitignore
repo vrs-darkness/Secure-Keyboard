@@ -3,6 +3,7 @@
 file.txt
 keyboard.bin
 word.keras
+quantized_model.tflite
 # Node modules
 node_modules
 
