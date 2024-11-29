@@ -53,10 +53,3 @@ Once the server is running, execute the client script to interact with it:
 ```bash
 python3 client.py
 ```
-
-The client script sends requests to the server and processes the responses.  
-
----
-
- 
-```
