@@ -3,6 +3,7 @@
 **🔑 Keywords**: GBoard, Federated Learning, COE, CDE, DPC  
 
 With the growing adoption of mobile keyboard applications like Google GBoard, significant challenges arise in safeguarding 🛡️ user privacy during distributed machine learning processes such as **Federated Learning (FL)**. Traditional FL frameworks, while decentralized, still expose sensitive user data 📂 to potential security risks and model instability caused by outlier data during training.  
+You can find the Project Report: [Here](https://drive.google.com/file/d/1tBoxT4Nv9Ut_BfYAW7wuZz1s_xr90LtL/view?usp=sharing)
 
 This project tackles these challenges with a **dual-layered solution**:  
 
