@@ -1,4 +1,3 @@
-```markdown
 # 🚀 FastAPI Server and Client Setup  
 
 This repository contains a **FastAPI server** and a corresponding **client** for interacting with the server. Follow the instructions below to get started.  
