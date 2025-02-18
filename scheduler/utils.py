@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from ._init import Status
+from ._init import Status, Device
 import json
 
 
@@ -33,3 +33,26 @@ async def delete_status(db: Session, status: Status):
     db.delete(status)
     db.commit()
     return status
+
+
+async def create_device(db: Session, device: Device):
+    db.add(device)
+    db.commit()
+    db.refresh(device)
+    return device
+
+
+async def get_device(db: Session, device_id: str):
+    device = db.query(Device).filter(Device.device_id == device_id).first()
+    return device
+
+
+async def update_device(db: Session, device: Device):
+    db.query(Device).filter(Device.device_id == device.device_id).update(device.__dict__)  # noqa
+    db.commit()
+
+
+async def delete_device(db: Session, device: Device):
+    db.delete(device)
+    db.commit()
+    return device

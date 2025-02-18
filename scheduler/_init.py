@@ -32,6 +32,13 @@ class Status(Base):
     data_size = Column(Integer)
 
 
+class Device(Base):
+    __tablename__ = "device"
+    device_id = Column(String, primary_key=True, index=True)
+    device_name = Column(String, index=True)
+    token = Column(String, index=True)
+
+
 Base.metadata.create_all(bind=engine)
 
 

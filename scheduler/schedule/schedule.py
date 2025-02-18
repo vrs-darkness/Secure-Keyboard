@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 
 
+
 @app.get("/current_status")
 async def current_status(
     filter: CurrenStatus,
@@ -20,4 +21,3 @@ async def current_status(
     except Exception as e:
         logger.error(f"Error in current_status: {e}")
         return JSONResponse(content="Internal Server Error", status_code=500)
-
