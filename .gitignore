@@ -61,3 +61,21 @@ Thumbs.db
 
 /cron.log
 /scheduler/keyboard.json
+
+*.cache
+.cache/
+# Python cache files
+__pycache__/
+*/__pycache__/
+*/*/__pycache__/
+*.py[cod]
+.sass-cache/
+.npm/
+.eslintcache
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
