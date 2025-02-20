@@ -60,7 +60,7 @@ async function sendTokenToServer(deviceInfo: DeviceInfo) {
 
 
 
-export default function App() {
+export default  async function TokenPusher() {
   const [deviceToken, setDeviceToken] = useState<string | null>(null);
 
   useEffect(() => {

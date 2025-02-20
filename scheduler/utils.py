@@ -35,15 +35,26 @@ async def delete_status(db: Session, status: Status):
     return status
 
 
+async def get_device(db: Session, device_id: str):
+    device = db.query(Device).filter(Device.device_id == device_id)
+    device = device.all().__dict__
+    device = [item for item in device if item['_sa_instance_state'] is None]
+    return device
+
+
 async def create_device(db: Session, device: Device):
     db.add(device)
     db.commit()
     db.refresh(device)
     return device
 
-
-async def get_device(db: Session, device_id: str):
+async def get_device_by_id(db: Session, device_id: str):
     device = db.query(Device).filter(Device.device_id == device_id).first()
+    return device
+
+
+async def get_all_device(db: Session):
+    device = db.query(Device).all()
     return device
 
 

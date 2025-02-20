@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
-from ._schema import RegisterDevice
-from .._init import get_db, Device
-from sqlalchemy.orm import Session
-from ..utils import create_device
+from ._schema import RegisterDevice  # type: ignore
+from .._init import get_db, Device  # type: ignore
+from sqlalchemy.orm import Session  # type: ignore
+from ..utils import create_device  # type: ignore
 from uuid import uuid4
 app = FastAPI()
 

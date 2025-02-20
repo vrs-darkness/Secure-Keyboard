@@ -18,7 +18,7 @@ async def send_batch_notification(
                     title=f"{status_code}",
                     body=MessageCode[status_code]
                 ),
-                token=mobile_tokens[i]
+                token=mobile_tokens[i], credentials=cred
             ) for i in range(len(mobile_ids))
         ]
         response = await asyncio.to_thread(messaging.send_all, notifications)

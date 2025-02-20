@@ -57,3 +57,7 @@ Thumbs.db
 
 # Build output
 /dist/
+
+
+/cron.log
+/scheduler/keyboard.json
