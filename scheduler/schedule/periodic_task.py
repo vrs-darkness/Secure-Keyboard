@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 async def periodic_task():
     # TODO: Add a check to see if the device is online
     # TODO: Add a check to see if the device is offline
-    # TODO: To make this API call, we need to get the device id and token from the database
+    # TODO: To make this API call, we need to get the device id and token from the database # noqa
     logger.info("Periodic task executed.")
     logger.info(f"start time: {datetime.now()}")
     try:

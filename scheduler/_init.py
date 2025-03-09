@@ -42,6 +42,7 @@ Base.metadata.create_all(bind=engine)
 
 
 # # Initialize Firebase Admin SDK
-cred_path = os.path.join(os.getenv("BASE_PATH"), os.getenv("FIREBASE_CREDENTIALS"))  # type: ignore
+cred_path = os.path.join(os.getenv("BASE_PATH"), os.getenv(
+    "FIREBASE_CREDENTIALS"))  # type: ignore
 cred = credentials.Certificate(cred_path)  # type: ignore
 firebase_admin.initialize_app(cred)

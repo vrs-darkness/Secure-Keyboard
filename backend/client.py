@@ -6,16 +6,17 @@ import tensorflow as tf
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import uvicorn
-from format import Input, Train
-from Coe.cosine import COE
-from Distributed_paillier_cryptosystem.encryption import DPC
+from .schema import Input, Train
+from ._similarity import COE
+from .encryption import DPC
 import pickle
 import requests
 import re
-import pandas as pd
+import os
 
-embed = fasttext.load_model('keyboard.bin')
-model = tf.keras.models.load_model('word.keras')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+embed = fasttext.load_model(os.path.join(BASE_DIR, '_model', 'keyboard.bin'))
+model = tf.keras.models.load_model(os.path.join(BASE_DIR, '_model', 'word.keras')) # noqa
 words = embed.get_words()
 dpc = DPC()
 partial = dpc.split_private_key(1, 1)
@@ -41,8 +42,11 @@ def datasetmaker(data: dict):
 def datasetembeder(data: dict):
     Data_embed = {'X': [], 'Y': []}
     for i in range(len(data['X'])):
-        Data_embed['X'].append(np.array([embed.get_word_vector(word) for word in embed.get_line(data['X'][i])[0]]))
-        Data_embed['Y'].append(embed.get_sentence_vector(data['Y'][i]).reshape(1, -1))
+        Data_embed['X'].append(np.array([
+            embed.get_word_vector(word) for word in embed.get_line(data['X'][
+                i])[0]]))
+        Data_embed['Y'].append(embed.get_sentence_vector(data['Y'][i]).reshape(
+            1, -1))
     Data_embed['X'] = np.array(Data_embed['X'])
     Data_embed['Y'] = np.array(Data_embed['Y'])
     return Data_embed
@@ -60,7 +64,7 @@ async def recommend(input:  Input):
         print(Stripped)
         vector = np.array([embed.get_word_vector(i) for i in Stripped])
     else:
-        vector = np.array([embed.get_word_vector(i) for i in Input1.split(" ")])
+        vector = np.array([embed.get_word_vector(i) for i in Input1.split(" ")]) # noqa
     result = model.predict(vector.reshape(-1, vector.shape[0], 200))
     cos_similarities = cosine_similarity([result.reshape(-1,)], word_vectors)
     top_3_indices = np.argsort(cos_similarities, axis=1)[0][::-1][:3]
@@ -76,7 +80,8 @@ async def train_and_upload(req: Train):
     try:
         model = tf.keras.models.load_model("model1.keras")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to load model: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to load\
+                            model: {e}")
     # Prepare the dataset
     dataset = datasetmaker(Store)
     dataset = datasetembeder(dataset)
@@ -97,7 +102,8 @@ async def train_and_upload(req: Train):
             for layer_idx, grad_diffs in global_grad.items():
                 layer = model.layers[layer_idx]
                 weights = layer.get_weights()
-                modified_weights = [COE(weight) if i < len(grad_diffs) else weight for i, weight in enumerate(weights)]
+                modified_weights = [COE(weight) if i < len(
+                    grad_diffs) else weight for i, weight in enumerate(weights)]  # noqa
                 _ = dpc.ENCRYPT(modified_weights, partial)
                 layer.set_weights(modified_weights)
 
@@ -111,11 +117,14 @@ async def train_and_upload(req: Train):
     # Send the pickled model to the update_weights endpoint
     with open("updated_model.pkl", "rb") as f:
         files = {'file': f}
-        response = requests.post("http://127.0.0.1:8000/update_weights/", files=files)
+        response = requests.post("http://127.0.0.1:8000/update_weights/",
+                                 files=files)
     # Check response from the update_weights endpoint
     if response.status_code != 200:
-        raise HTTPException(status_code=500, detail="Failed to update weights on the server")
-    return {"message": "Model trained, pickled, and sent to the server successfully"}
+        raise HTTPException(status_code=500, detail="Failed to update weights\
+                            on the server")
+    return {"message": "Model trained, pickled, and sent to the server\
+            successfully"}
 
 if __name__ == '__main__':
-    uvicorn.run("client:app", host='0.0.0.0', port=8500)
+    uvicorn.run(app, host='0.0.0.0', port=8500)

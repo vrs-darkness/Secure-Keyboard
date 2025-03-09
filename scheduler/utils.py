@@ -48,6 +48,7 @@ async def create_device(db: Session, device: Device):
     db.refresh(device)
     return device
 
+
 async def get_device_by_id(db: Session, device_id: str):
     device = db.query(Device).filter(Device.device_id == device_id).first()
     return device

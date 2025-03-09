@@ -1,13 +1,12 @@
-from FastAPI import FastAPI, Depends, JSONResponse
-from .schema import CurrenStatus
-from ._init import get_db
-from sqlalchemy.orm import Session
-from .utils import get_status, create_status, update_status, delete_status
+from FastAPI import FastAPI, Depends, JSONResponse  # type: ignore # noqa
+from .schema import CurrenStatus  # type: ignore # noqa
+from ._init import get_db  # type: ignore # noqa
+from sqlalchemy.orm import Session  # type: ignore # noqa
+from .utils import get_status, create_status, update_status, delete_status  # type: ignore # noqa
 import logging
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
-
 
 
 @app.get("/current_status")

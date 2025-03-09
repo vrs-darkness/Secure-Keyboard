@@ -1,10 +1,9 @@
 import tensorflow as tf
 import numpy as np
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense
-import os
+from tensorflow.keras.preprocessing.text import Tokenizer  # type: ignore # noqa
+from tensorflow.keras.preprocessing.sequence import pad_sequences  # type: ignore # noqa
+from tensorflow.keras.models import Sequential  # type: ignore # noqa
+from tensorflow.keras.layers import Embedding, LSTM, Dense  # type: ignore # noqa
 
 
 class NextWordPredictor:
@@ -64,7 +63,7 @@ class NextWordPredictor:
         interpreter = tf.lite.Interpreter(model_path='next_word_model.tflite')
         interpreter.allocate_tensors()
         input_details = interpreter.get_input_details()
-        output_details = interpreter.get_output_details()   
+        output_details = interpreter.get_output_details()
         token_list = self.tokenizer.texts_to_sequences([text])[0]
         token_list = pad_sequences([token_list],
                                    maxlen=self.max_sequence_len-1,
